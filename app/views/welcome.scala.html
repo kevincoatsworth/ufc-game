@@ -1,0 +1,29 @@
+@import play.api.data._
+@import play.api.data.Forms._
+@import play.api.mvc.Request
+@import helper._
+@import models.Fighter
+
+@(name: String, fightRecord: List[Fighter], fighter: Fighter)(implicit request: Request[_])
+
+@main(s"Welcome $name") {
+  <h1>Welcome @name!</h1>
+  <p>Please select the fighter you believe has the fight record below.</p>
+
+@fighter.previousOpponents.map{x =>
+  <ul>
+    <li>@x</li>
+  </ul>
+}
+
+  <form action=@CSRF(controllers.routes.HomeController.onSubmit) method="post">
+      <select name="person">
+        @fightRecord.map{x =>
+          <option value="@x.name">@x.name</option>
+        }
+      </select>
+      <br>
+      <br>
+      <input type="submit">
+  </form>
+}
