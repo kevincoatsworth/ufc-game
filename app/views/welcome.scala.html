@@ -16,7 +16,7 @@
   </ul>
 }
 
-  <form action=@CSRF(controllers.routes.HomeController.onSubmit) method="post">
+  <form action=@CSRF(controllers.routes.HomeController.onSubmit(fighter.name)) method="post">
       <select name="person">
         @fightRecord.map{x =>
           <option value="@x.name">@x.name</option>

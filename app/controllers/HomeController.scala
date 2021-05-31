@@ -1,8 +1,11 @@
 package controllers
 
+import models.Fighter
+
 import javax.inject._
 import play.api.mvc._
 import services.FighterService
+
 import scala.util.Random._
 
 /**
@@ -12,27 +15,24 @@ import scala.util.Random._
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
   val fighterInfo = new FighterService
-  val fights = fighterInfo.getFighterInfo
-  def randomNumber = nextInt(fights.size)
-  lazy val fighter = fights(randomNumber)
 
-  def index() = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index())
+  def index() = {
+    val fights = fighterInfo.getFighterInfo
+
+    def randomNumber = nextInt(fights.size)
+
+    lazy val fighter = fights(randomNumber)
+    welcome(fights, fighter)
   }
 
-  def welcome = Action { implicit request: Request[AnyContent] =>
+  def welcome(fights: List[Fighter], fighter: Fighter) = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.welcome("friend", fights, fighter))
   }
 
-  def onSubmit() = Action { implicit request: Request[AnyContent] =>
+  def onSubmit(fighterName: String) = Action { implicit request: Request[AnyContent] =>
     request.body.asFormUrlEncoded.get("person").head match {
-      case fighter.name => Redirect(routes.HomeController.winner())
-      case _  => Ok("Incorrect! Hit back to try again!")
+      case name if name.equals(fighterName) => Ok(views.html.winner(fighterName))
+      case _ => Ok(views.html.loser(fighterName))
     }
   }
-
-  def winner() = Action { _ =>
-    Ok(s"Well done! You correctly guessed that the previous opponents belonged to ${fighter.name}.")
-  }
-
 }

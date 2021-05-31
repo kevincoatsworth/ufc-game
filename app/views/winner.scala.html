@@ -1,0 +1,13 @@
+@import play.api.data._
+@import play.api.data.Forms._
+@import play.api.mvc.Request
+@import helper._
+@import models.Fighter
+
+@(fighterName: String)(implicit request: Request[_])
+
+@main("Correct!") {
+  <h1>Correct!</h1>
+  <p>Well done! You correctly guessed that the fight record belonged to @fighterName.</p>
+<p>Start a <a href="@controllers.routes.HomeController.index()">new game</a>, if you think you're so smart. Or don't. I don't care.</p>
+}

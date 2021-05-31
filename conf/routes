@@ -4,10 +4,8 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                               controllers.HomeController.index
-GET     /input                          controllers.HomeController.welcome
-GET     /winner                          controllers.HomeController.winner
-POST    /submit                         controllers.HomeController.onSubmit
+GET     /                            controllers.HomeController.index
+POST    /submit                      controllers.HomeController.onSubmit(name: String)
 
 
 # Map static resources from the /public folder to the /assets URL path
